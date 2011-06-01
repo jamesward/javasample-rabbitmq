@@ -10,7 +10,7 @@
 
     <bean id="factory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
         <property name="host" value="${RABBIT_HOST}"/>
-        <property name="port" value="${RABBIT_PORT}"/>
+        <property name="port" value="${RABBIT_PORT:16919}"/>
         <property name="username" value="${RABBIT_USER}"/>
         <property name="virtualHost" value="${RABBIT_VHOST}"/>
         <property name="password" value="${RABBIT_PASSWORD}"/>
