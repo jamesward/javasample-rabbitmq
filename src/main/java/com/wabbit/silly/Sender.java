@@ -7,12 +7,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class Sender {
 
     public static void main(String[] args) throws UnsupportedEncodingException, InterruptedException {
-        for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
+        TreeMap<String,String> env  = new TreeMap<String, String>(System.getenv());
+        for (Map.Entry<String, String> entry : env.entrySet()) {
             System.out.println(entry.getKey()+"==>"+entry.getValue());
         }
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:context.xml");
