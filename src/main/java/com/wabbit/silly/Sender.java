@@ -16,8 +16,8 @@ public class Sender {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUsername(getenv("RABBIT_USER"));
         factory.setPassword(getenv("RABBIT_PASSWORD"));
-        factory.setVirtualHost("RABBIT_VHOST");
-        factory.setHost("RABBIT_HOST");
+        factory.setVirtualHost(getenv("RABBIT_VHOST"));
+        factory.setHost(getenv("RABBIT_HOST"));
         factory.setPort(Integer.parseInt(getenv("RABBIT_PORT")));
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
