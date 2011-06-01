@@ -1,21 +1,38 @@
 package com.wabbit.silly;
 
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Message;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.GetResponse;
+import sun.plugin2.message.Message;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+
+import static java.lang.System.getenv;
 
 public class Receiver {
 
-    public static void main(String[] args) throws UnsupportedEncodingException, InterruptedException {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:context.xml");
-        AmqpTemplate template = ctx.getBean(AmqpTemplate.class);
+    public static void main(String[] args) throws IOException, InterruptedException {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setUsername(getenv("RABBIT_USER"));
+        factory.setPassword(getenv("RABBIT_PASSWORD"));
+        factory.setVirtualHost("RABBIT_VHOST");
+        factory.setHost("RABBIT_HOST");
+        factory.setPort(Integer.parseInt(getenv("RABBIT_PORT")));
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        String exchangeName = "silly-wabbit-exchange";
+        String queueName = "silly-wabbit-queue";
+        String routingKey = "silly-wabbit-key";
+        channel.exchangeDeclare(exchangeName, "direct", true);
+        channel.queueDeclare(queueName, true, false, false, null);
+        channel.queueBind(queueName, exchangeName, routingKey);
+
         while (true) {
-            Message msg = template.receive();
-            if (msg != null) {
-                System.out.println("Recieved:->" + new String(msg.getBody(), "UTF-8"));
+            GetResponse response = channel.basicGet(queueName,true);
+            if (response != null) {
+                System.out.println("Recieved:->" + new String(response.getBody(), "UTF-8"));
             }
             Thread.sleep(500);
         }

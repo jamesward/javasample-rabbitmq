@@ -1,31 +1,38 @@
 package com.wabbit.silly;
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.IOException;
+
+import static java.lang.System.getenv;
 
 
 public class Sender {
 
-    public static void main(String[] args) throws UnsupportedEncodingException, InterruptedException {
-        TreeMap<String,String> env  = new TreeMap<String, String>(System.getenv());
-        for (Map.Entry<String, String> entry : env.entrySet()) {
-            System.out.println(entry.getKey()+"==>"+entry.getValue());
-        }
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:context.xml");
+    public static void main(String[] args) throws IOException, InterruptedException {
 
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setUsername(getenv("RABBIT_USER"));
+        factory.setPassword(getenv("RABBIT_PASSWORD"));
+        factory.setVirtualHost("RABBIT_VHOST");
+        factory.setHost("RABBIT_HOST");
+        factory.setPort(Integer.parseInt(getenv("RABBIT_PORT")));
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        String exchangeName = "silly-wabbit-exchange";
+        String queueName = "silly-wabbit-queue";
+        String routingKey = "silly-wabbit-key";
+        channel.exchangeDeclare(exchangeName, "direct", true);
+        channel.queueDeclare(queueName, true, false, false, null);
+        channel.queueBind(queueName, exchangeName, routingKey);
 
-        AmqpTemplate template = ctx.getBean(AmqpTemplate.class);
-        while(true){
+        while (true) {
             String msg = "Sent at:" + System.currentTimeMillis();
             byte[] body = msg.getBytes("UTF-8");
-            template.send(new Message(body, new MessageProperties()));
-            System.out.println("Sent:->"+msg);
+            channel.basicPublish(exchangeName, routingKey, null, body);
+            System.out.println("Sent:->" + msg);
             Thread.sleep(1000);
         }
 
