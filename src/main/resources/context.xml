@@ -9,11 +9,11 @@
     </bean>
 
     <bean id="factory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <property name="host" value="${RABBIT_HOST}"/>
+        <property name="host" value="#{ systemEnvironment['RABBIT_HOST']}"/>
         <property name="port" value="#{ systemEnvironment['RABBIT_PORT'] }"/>
-        <property name="username" value="${RABBIT_USER}"/>
-        <property name="virtualHost" value="${RABBIT_VHOST}"/>
-        <property name="password" value="${RABBIT_PASSWORD}"/>
+        <property name="username" value="#{ systemEnvironment['RABBIT_USER']}"/>
+        <property name="virtualHost" value="#{ systemEnvironment['RABBIT_VHOST']}"/>
+        <property name="password" value="#{ systemEnvironment['RABBIT_PASSWORD']}"/>
     </bean>
 
 
