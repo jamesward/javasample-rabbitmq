@@ -28,6 +28,7 @@ public class Sender {
         channel.queueDeclare(queueName, true, false, false, null);
         channel.queueBind(queueName, exchangeName, routingKey);
 
+
         while (true) {
             String msg = "Sent at:" + System.currentTimeMillis();
             byte[] body = msg.getBytes("UTF-8");
