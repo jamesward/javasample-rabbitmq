@@ -13,18 +13,18 @@
     <bean id="cf" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
         <property name="host" value="${RABBITMQ_HOST:localhost}"/>
         <property name="port" value="${RABBITMQ_PORT:5672}"/>
-        <property name="username" value="${RABBITMQ_USER:}"/>
-        <property name="password" value="${RABBITMQ_PASSWORD:}"/>
+        <property name="username" value="${RABBITMQ_USER:guest}"/>
+        <property name="password" value="${RABBITMQ_PASSWORD:guest}"/>
         <property name="virtualHost" value="${RABBITMQ_VHOST:/}"/>
     </bean>
 
     <rabbit:admin id="admin" connection-factory="cf"/>
 
-    <rabbit:queue id="silly-wabbit-queue"/>
+   <rabbit:queue id="silly-wabbit-queue" durable="true" auto-delete="false" exclusive="false"  name="silly-wabbit-queue"/>
 
-    <rabbit:direct-exchange name="silly-wabbit-exchange">
+    <rabbit:direct-exchange name="silly-wabbit-exchange" durable="true" auto-delete="false" id="silly-wabbit-exchange">
         <rabbit:bindings>
-            <rabbit:binding queue="silly-wabbit-queue"/>
+            <rabbit:binding queue="silly-wabbit-queue" key="silly-wabbit-key"/>
         </rabbit:bindings>
     </rabbit:direct-exchange>
 

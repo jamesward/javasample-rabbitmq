@@ -22,6 +22,7 @@ public class SpringSender {
         RabbitTemplate rabbitTemplate = ctx.getBean(RabbitTemplate.class);
         while(true){
             String msg = "Spring Sent at:" + System.currentTimeMillis();
+            System.out.println(msg);
             byte[] body = msg.getBytes("UTF-8");
             rabbitTemplate.send(new Message(body, new MessageProperties()));
             Thread.sleep(1000);
