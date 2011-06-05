@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/amqp http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd"
+       default-autowire="byName">
+
+    <context:property-placeholder/>
+
+    <bean id="cf" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+        <property name="host" value="${RABBITMQ_HOST:localhost}"/>
+        <property name="port" value="${RABBITMQ_PORT:5672}"/>
+        <property name="username" value="${RABBITMQ_USER:}"/>
+        <property name="password" value="${RABBITMQ_PASSWORD:}"/>
+        <property name="virtualHost" value="${RABBITMQ_VHOST:/}"/>
+    </bean>
+
+    <rabbit:admin id="admin" connection-factory="cf"/>
+
+    <rabbit:queue id="silly-wabbit-queue"/>
+
+    <rabbit:direct-exchange name="silly-wabbit-exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="silly-wabbit-queue"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <bean id="template" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <property name="connectionFactory" ref="cf"/>
+        <property name="exchange" value="silly-wabbit-exchange"/>
+        <property name="queue" value="silly-wabbit-queue"/>
+        <property name="routingKey" value="silly-wabbit-key"/>
+    </bean>
+
+
+</beans>
