@@ -18,7 +18,6 @@
         <property name="virtualHost" value="${RABBITMQ_VHOST:/}"/>
     </bean>
 
-    <rabbit:admin id="admin" connection-factory="cf"/>
 
     <rabbit:queue id="silly-wabbit-queue"/>
 
