@@ -1,4 +1,4 @@
-send: jdyno -Xmx512m -cp target/silly-wabbit-1.0-SNAPSHOT.jar com.wabbit.silly.Sender
-springsend: jdyno -Xmx512m -cp target/silly-wabbit-1.0-SNAPSHOT.jar com.wabbit.silly.SpringSender
-rec: jdyno -Xmx512m -cp target/silly-wabbit-1.0-SNAPSHOT.jar  com.wabbit.silly.Receiver
-springrec: jdyno -Xmx512m -cp target/silly-wabbit-1.0-SNAPSHOT.jar  com.wabbit.silly.SpringReceiver
+send: java -cp target/silly-wabbit-1.0-SNAPSHOT.jar com.wabbit.silly.Sender
+springsend: java -cp target/silly-wabbit-1.0-SNAPSHOT.jar com.wabbit.silly.SpringSender
+rec: java -cp target/silly-wabbit-1.0-SNAPSHOT.jar  com.wabbit.silly.Receiver
+springrec: java -cp target/silly-wabbit-1.0-SNAPSHOT.jar  com.wabbit.silly.SpringReceiver
