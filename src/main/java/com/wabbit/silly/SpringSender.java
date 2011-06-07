@@ -19,6 +19,11 @@ public class SpringSender {
 
     public static void main(String[] args) throws UnsupportedEncodingException, InterruptedException {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:context.xml");
+        System.out.println(ctx.getBean("rabbitMqHost"));
+        System.out.println(ctx.getBean("rabbitMqPort"));
+        System.out.println(ctx.getBean("rabbitMqUser"));
+        System.out.println(ctx.getBean("rabbitMqPassword"));
+        System.out.println(ctx.getBean("rabbitMqVHost"));
         RabbitTemplate rabbitTemplate = ctx.getBean(RabbitTemplate.class);
         while(true){
             String msg = "Spring Sent at:" + System.currentTimeMillis();

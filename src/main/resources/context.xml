@@ -10,17 +10,52 @@
 
     <context:property-placeholder/>
 
+
+    <bean id="rabbitMqUrlRegex" class="java.util.regex.Pattern" factory-method="compile">
+        <constructor-arg value="amqp://(.*):(.*)@(.*):(.*)(/.*)"/>
+    </bean>
+
+    <bean id="rabbitMqUrlMatcher" factory-bean="rabbitMqUrlRegex" factory-method="matcher" init-method="find">
+        <constructor-arg value="${RABBITMQ_URL:amqp://guest:guest@localhost:5672}/"/>
+    </bean>
+
+    <bean id="rabbitMqUser" factory-bean="rabbitMqUrlMatcher" factory-method="group">
+        <constructor-arg value="1"/>
+    </bean>
+
+    <bean id="rabbitMqPassword" factory-bean="rabbitMqUrlMatcher" factory-method="group">
+        <constructor-arg value="2"/>
+    </bean>
+
+    <bean id="rabbitMqHost" factory-bean="rabbitMqUrlMatcher" factory-method="group">
+        <constructor-arg value="3"/>
+    </bean>
+
+    <bean id="rabbitMqPortString" factory-bean="rabbitMqUrlMatcher" factory-method="group">
+        <constructor-arg value="4"/>
+    </bean>
+
+    <bean id="rabbitMqPort" class="java.lang.Integer" factory-method="valueOf">
+        <constructor-arg ref="rabbitMqPortString"/>
+    </bean>
+
+    <bean id="rabbitMqVHost" factory-bean="rabbitMqUrlMatcher" factory-method="group">
+        <constructor-arg value="5"/>
+    </bean>
+
+
     <bean id="cf" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <property name="host" value="${RABBITMQ_HOST:localhost}"/>
-        <property name="port" value="${RABBITMQ_PORT:5672}"/>
-        <property name="username" value="${RABBITMQ_USER:guest}"/>
-        <property name="password" value="${RABBITMQ_PASSWORD:guest}"/>
-        <property name="virtualHost" value="${RABBITMQ_VHOST:/}"/>
+        <property name="host" ref="rabbitMqHost"/>
+        <property name="port" ref="rabbitMqPort"/>
+        <property name="username" ref="rabbitMqUser"/>
+        <property name="password" value="rabbitMqPassword"/>
+        <property name="virtualHost" value="rabbitMqVHost"/>
     </bean>
 
     <rabbit:admin id="admin" connection-factory="cf"/>
 
-   <rabbit:queue id="silly-wabbit-queue" durable="true" auto-delete="false" exclusive="false"  name="silly-wabbit-queue"/>
+    <rabbit:queue id="silly-wabbit-queue" durable="true" auto-delete="false" exclusive="false"
+                  name="silly-wabbit-queue"/>
 
     <rabbit:direct-exchange name="silly-wabbit-exchange" durable="true" auto-delete="false" id="silly-wabbit-exchange">
         <rabbit:bindings>
