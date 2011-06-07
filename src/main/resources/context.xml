@@ -19,37 +19,12 @@
         <constructor-arg value="${RABBITMQ_URL:amqp://guest:guest@localhost:5672/}"/>
     </bean>
 
-    <bean id="rabbitMqUser" factory-bean="rabbitMqUrlMatcher" factory-method="group">
-        <constructor-arg value="1"/>
-    </bean>
-
-    <bean id="rabbitMqPassword" factory-bean="rabbitMqUrlMatcher" factory-method="group">
-        <constructor-arg value="2"/>
-    </bean>
-
-    <bean id="rabbitMqHost" factory-bean="rabbitMqUrlMatcher" factory-method="group">
-        <constructor-arg value="3"/>
-    </bean>
-
-    <bean id="rabbitMqPortString" factory-bean="rabbitMqUrlMatcher" factory-method="group">
-        <constructor-arg value="4"/>
-    </bean>
-
-    <bean id="rabbitMqPort" class="java.lang.Integer" factory-method="valueOf">
-        <constructor-arg ref="rabbitMqPortString"/>
-    </bean>
-
-    <bean id="rabbitMqVHost" factory-bean="rabbitMqUrlMatcher" factory-method="group">
-        <constructor-arg value="5"/>
-    </bean>
-
-
     <bean id="cf" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <property name="host" ref="rabbitMqHost"/>
-        <property name="port" ref="rabbitMqPort"/>
-        <property name="username" ref="rabbitMqUser"/>
-        <property name="password" ref="rabbitMqPassword"/>
-        <property name="virtualHost" ref="rabbitMqVHost"/>
+        <property name="username" value="#{rabbitMqUrlMatcher.group(1)}"/>
+        <property name="password" value="#{rabbitMqUrlMatcher.group(2)}"/>
+        <property name="host" value="#{rabbitMqUrlMatcher.group(3)}"/>
+        <property name="port" value="#{rabbitMqUrlMatcher.group(4)}"/>
+        <property name="virtualHost" value="#{rabbitMqUrlMatcher.group(5)}"/>
     </bean>
 
     <rabbit:admin id="admin" connection-factory="cf"/>
