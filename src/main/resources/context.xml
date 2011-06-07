@@ -16,7 +16,7 @@
     </bean>
 
     <bean id="rabbitMqUrlMatcher" factory-bean="rabbitMqUrlRegex" factory-method="matcher" init-method="find">
-        <constructor-arg value="${RABBITMQ_URL:amqp://guest:guest@localhost:5672}/"/>
+        <constructor-arg value="${RABBITMQ_URL:amqp://guest:guest@localhost:5672/}"/>
     </bean>
 
     <bean id="rabbitMqUser" factory-bean="rabbitMqUrlMatcher" factory-method="group">
