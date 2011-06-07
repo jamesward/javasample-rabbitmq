@@ -48,8 +48,8 @@
         <property name="host" ref="rabbitMqHost"/>
         <property name="port" ref="rabbitMqPort"/>
         <property name="username" ref="rabbitMqUser"/>
-        <property name="password" value="rabbitMqPassword"/>
-        <property name="virtualHost" value="rabbitMqVHost"/>
+        <property name="password" ref="rabbitMqPassword"/>
+        <property name="virtualHost" ref="rabbitMqVHost"/>
     </bean>
 
     <rabbit:admin id="admin" connection-factory="cf"/>
