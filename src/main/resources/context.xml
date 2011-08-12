@@ -10,20 +10,8 @@
 
     <context:property-placeholder/>
 
-    <bean id="rabbitMqUrlRegex" class="java.util.regex.Pattern" factory-method="compile">
-        <constructor-arg value="amqp://(.*):(.*)@(.*):(.*)/(.*)"/>
-    </bean>
-
-    <bean id="rabbitMqUrlMatcher" factory-bean="rabbitMqUrlRegex" factory-method="matcher" init-method="find">
-        <constructor-arg value="${RABBITMQ_URL:amqp://guest:guest@localhost:5672/}"/>
-    </bean>
-
     <bean id="cf" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <property name="username" value="#{rabbitMqUrlMatcher.group(1)}"/>
-        <property name="password" value="#{rabbitMqUrlMatcher.group(2)}"/>
-        <property name="host" value="#{rabbitMqUrlMatcher.group(3)}"/>
-        <property name="port" value="#{rabbitMqUrlMatcher.group(4)}"/>
-        <property name="virtualHost" value="#{rabbitMqUrlMatcher.group(5)}"/>
+        <constructor-arg><value>#{ T(com.heroku.javasamplerabbitmq.ConnectionFactoryUtil).getConnectionFactory(systemEnvironment['RABBITMQ_URL'])}</value></constructor-arg>
     </bean>
 
     <rabbit:admin id="admin" connection-factory="cf"/>
