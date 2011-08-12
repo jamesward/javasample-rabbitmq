@@ -1,4 +1,4 @@
-package com.wabbit.silly;
+package com.heroku.javasamplerabbitmq;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -8,17 +8,10 @@ import java.io.IOException;
 
 import static java.lang.System.getenv;
 
-
-public class Sender {
+public class PojoSender {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setUsername(getenv("RABBITMQ_USER"));
-        factory.setPassword(getenv("RABBITMQ_PASSWORD"));
-        factory.setVirtualHost(getenv("RABBITMQ_VHOST"));
-        factory.setHost(getenv("RABBITMQ_HOST"));
-        factory.setPort(Integer.parseInt(getenv("RABBITMQ_PORT")));
+        ConnectionFactory factory = ConnectionFactoryUtil.getConnectionFactory(getenv("RABBITMQ_URL"));
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         String exchangeName = "silly-wabbit-exchange";
@@ -27,7 +20,6 @@ public class Sender {
         channel.exchangeDeclare(exchangeName, "direct", true);
         channel.queueDeclare(queueName, true, false, false, null);
         channel.queueBind(queueName, exchangeName, routingKey);
-
 
         while (true) {
             String msg = "Sent at:" + System.currentTimeMillis();

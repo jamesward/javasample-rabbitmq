@@ -1,4 +1,4 @@
-package com.wabbit.silly;
+package com.heroku.javasamplerabbitmq;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -6,13 +6,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by IntelliJ IDEA.
- * User: sclasen
- * Date: 6/5/11
- * Time: 10:59 AM
- * To change this template use File | Settings | File Templates.
- */
 public class SpringReceiver {
 
     public static void main(String[] args) throws UnsupportedEncodingException, InterruptedException {

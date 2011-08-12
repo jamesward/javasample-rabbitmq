@@ -1,12 +1,1 @@
-.classpath
-.project
-.settings
 target
-forceDatabase.properties
-.springBeans
-deploy
-deploy.zip
-*.ipr
-*.iws
-*.iml
-
