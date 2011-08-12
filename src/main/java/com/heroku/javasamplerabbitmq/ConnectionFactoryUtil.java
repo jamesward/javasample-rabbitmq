@@ -8,7 +8,7 @@ import com.rabbitmq.client.ConnectionFactory;
 public class ConnectionFactoryUtil {
 
     public static ConnectionFactory getConnectionFactory(String url) {
-        Pattern rabbitMqPattern = Pattern.compile("amqp://(.*):(.*)@(.*):(.*)(/.*)");
+        Pattern rabbitMqPattern = Pattern.compile("amqp://(.*):(.*)@(.*):(.*)/(.*)");
         Matcher matcher = rabbitMqPattern.matcher(url);
         matcher.matches();
 
