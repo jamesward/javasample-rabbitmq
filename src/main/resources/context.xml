@@ -11,7 +11,7 @@
     <context:property-placeholder/>
 
     <bean id="rabbitMqUrlRegex" class="java.util.regex.Pattern" factory-method="compile">
-        <constructor-arg value="amqp://(.*):(.*)@(.*):(.*)(/.*)"/>
+        <constructor-arg value="amqp://(.*):(.*)@(.*):(.*)/(.*)"/>
     </bean>
 
     <bean id="rabbitMqUrlMatcher" factory-bean="rabbitMqUrlRegex" factory-method="matcher" init-method="find">
