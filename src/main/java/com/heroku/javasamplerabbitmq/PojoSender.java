@@ -5,12 +5,13 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import static java.lang.System.getenv;
 
 public class PojoSender {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
         ConnectionFactory factory = ConnectionFactoryUtil.getConnectionFactory(getenv("RABBITMQ_URL"));
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
