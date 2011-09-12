@@ -14,7 +14,9 @@
         <constructor-arg><value>#{ T(org.example.RabbitFactoryUtil).getConnectionFactory()}</value></constructor-arg>
     </bean>
 
+    <!--
     <rabbit:admin id="admin" connection-factory="cf"/>
+    -->
 
     <rabbit:queue id="silly-wabbit-queue" durable="true" auto-delete="false" exclusive="false" name="silly-wabbit-queue"/>
 
