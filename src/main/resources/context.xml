@@ -11,13 +11,12 @@
     <context:property-placeholder/>
 
     <bean id="cf" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <constructor-arg><value>#{ T(com.heroku.javasamplerabbitmq.ConnectionFactoryUtil).getConnectionFactory(systemEnvironment['RABBITMQ_URL'])}</value></constructor-arg>
+        <constructor-arg><value>#{ T(org.example.RabbitFactoryUtil).getConnectionFactory()}</value></constructor-arg>
     </bean>
 
     <rabbit:admin id="admin" connection-factory="cf"/>
 
-    <rabbit:queue id="silly-wabbit-queue" durable="true" auto-delete="false" exclusive="false"
-                  name="silly-wabbit-queue"/>
+    <rabbit:queue id="silly-wabbit-queue" durable="true" auto-delete="false" exclusive="false" name="silly-wabbit-queue"/>
 
     <rabbit:direct-exchange name="silly-wabbit-exchange" durable="true" auto-delete="false" id="silly-wabbit-exchange">
         <rabbit:bindings>
